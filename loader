@@ -11,25 +11,37 @@ end
 
 api.script_id = "f5ec84cb8ff1b58ef725bbcc589fac55"
 
-if isfile("savedazurekey") then
-    local savedKey = readfile("savedazurekey")
-    local status = api.check_key(savedKey)
-    if status.code == "KEY_VALID" then
-        getgenv().script_key = "\"" .. savedKey .. "\""
-        loadstring('script_key="' .. savedKey .. '"\nloadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/f5ec84cb8ff1b58ef725bbcc589fac55.lua"))()')()
-        Library:Notify({Title = "Azure Keysystem", Description = "Loaded saved key: " .. savedKey, Time = 4})
+local function loadMainScript(key)
+    local cleanedKey = key:gsub("%s+", "")
+    getgenv().script_key = cleanedKey
+    local success, err = pcall(function()
+        local scriptContent = game:HttpGet("https://api.luarmor.net/files/v3/loaders/f5ec84cb8ff1b58ef725bbcc589fac55.lua")
+        loadstring(scriptContent)()
+    end)
+    if success then
+        wait(1)
         Library:Unload()
+    else
+        Library:Notify({Title = "Azure Keysystem", Description = "Failed to load script: " .. tostring(err), Time = 4})
+    end
+end
+
+if isfile("savedazurekey") then
+    local azureKEY = readfile("savedazurekey"):gsub("%s+", "")
+    local status = api.check_key(azureKEY)
+    if status.code == "KEY_VALID" then
+        getgenv().script_key = azureKEY
+        Library:Notify({Title = "Azure Keysystem", Description = "Loaded saved key: " .. azureKEY, Time = 4})
+        loadMainScript(azureKEY)
     end
 end
 
 Tabs.Key:AddKeyBox("AzureKey", function(Success, ReceivedKey)
     local status = api.check_key(ReceivedKey)
     if status.code == "KEY_VALID" then
-        getgenv().script_key = "\"" .. ReceivedKey .. "\""
         writefile("savedazurekey", ReceivedKey)
-        loadstring('script_key="' .. ReceivedKey .. '"\nloadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/f5ec84cb8ff1b58ef725bbcc589fac55.lua"))()')()
         Library:Notify({Title = "Azure Keysystem", Description = "Welcome! Key: " .. ReceivedKey .. " accepted and saved.", Time = 4})
-        Library:Unload()
+        loadMainScript(ReceivedKey)
     elseif status.code == "KEY_HWID_LOCKED" then
         Library:Notify({Title = "Azure Keysystem", Description = "Key linked to a different HWID. Please reset it using our bot.", Time = 4})
     elseif status.code == "KEY_INCORRECT" then
