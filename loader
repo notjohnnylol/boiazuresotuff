@@ -1,6 +1,6 @@
 getgenv().script_key = getgenv()['script_key']
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/deividcomsono/Obsidian/main/Library.lua"))()
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/notjohnnylol/Azusidian/refs/heads/main/UILoader"))()
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
 local Window = Library:CreateWindow({Title = "Azure ", Footer = "Key System", Icon = 112280917739514, NotifySide = "Left", ShowCustomCursor = false})
 local Tabs = {Key = Window:AddTab("Azure Keysystem", "key")}
