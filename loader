@@ -13,13 +13,13 @@ if not game:GetService("Players").LocalPlayer then
     game:GetService("Players").PlayerAdded:Wait()
 end
 
-api.script_id = "f5ec84cb8ff1b58ef725bbcc589fac55"
+api.script_id = "bad5fd36e1c81e07977ad59c127c0791"
 
 local function load_script(key)
     local dec_key = key:gsub("%s+", "")
     getgenv().script_key = dec_key
     local success, err = pcall(function()
-        local script_content = game:HttpGet("https://api.luarmor.net/files/v3/loaders/f5ec84cb8ff1b58ef725bbcc589fac55.lua")
+        local script_content = game:HttpGet("https://api.luarmor.net/files/v3/loaders/bad5fd36e1c81e07977ad59c127c0791.lua")
         loadstring(script_content)()
     end)
     if success then
