@@ -5,7 +5,7 @@ local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.l
 local Window = Library:CreateWindow({Title = "Azure ", Footer = "Key System", Icon = 112280917739514, NotifySide = "Left", ShowCustomCursor = false})
 local Tabs = {Key = Window:AddTab("Azure Keysystem", "key")}
 
-local putKey = Tabs.Key:AddLeftGroupbox("Key Input")
+local key = Tabs.Key:AddLeftGroupbox("Key Input")
 local keyLinks = Tabs.Key:AddRightGroupbox("Key System Links")
 local UnloadUI = Tabs.Key:AddRightGroupbox("UI Unloading")
 
@@ -13,13 +13,13 @@ if not game:GetService("Players").LocalPlayer then
     game:GetService("Players").PlayerAdded:Wait()
 end
 
-api.script_id = "bad5fd36e1c81e07977ad59c127c0791"
+api.script_id = "c6a488fafed9291db97ad2202b349825"
 
 local function load_script(key)
     local dec_key = key:gsub("%s+", "")
     getgenv().script_key = dec_key
     local success, err = pcall(function()
-        local script_content = game:HttpGet("https://api.luarmor.net/files/v3/loaders/bad5fd36e1c81e07977ad59c127c0791.lua")
+        local script_content = game:HttpGet("https://api.luarmor.net/files/v3/loaders/c6a488fafed9291db97ad2202b349825.lua")
         loadstring(script_content)()
     end)
     if success then
@@ -30,7 +30,7 @@ local function load_script(key)
     end
 end
 
-putKey:AddInput("AzureKey", {
+key:AddInput("AzureKey", {
     Default = "",
     Numeric = false,
     Finished = true,
