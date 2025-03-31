@@ -26,7 +26,7 @@ local function load_script(key)
         task.wait()
         Library:Unload()
     else
-        Library:Notify({Title = "Azure Keysystem", Description = "something fucking went wrong: " .. tostring(err), Time = 4})
+        Library:Notify({Title = "Azure Keysystem", Description = "report in our discord (discord.gg/azurehub): " .. tostring(err), Time = 100})
     end
 end
 
