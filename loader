@@ -30,6 +30,16 @@ local function load_script(key)
     end
 end
 
+if getgenv().script_key then
+    task.spawn(function()
+        local status = api.check_key(getgenv().script_key)
+        if status.code == "KEY_VALID" then
+            Library:Notify({Title = "Azure Keysystem", Description = "Loaded predefined key: " .. getgenv().script_key, Time = 4})
+            load_script(getgenv().script_key)
+        end
+    end)
+end
+
 key:AddInput("AzureKey", {
     Default = "",
     Numeric = false,
@@ -67,7 +77,7 @@ UnloadUI:AddButton({Text = "Unload UI", Func = function()
     Library:Unload()
 end})
 
-if isfile("savedazurekey") then
+if isfile("savedazurekey") and not getgenv().script_key then
     task.spawn(function()
         local saved_key = readfile("savedazurekey"):gsub("%s+", "")
         local status = api.check_key(saved_key)
