@@ -1,4 +1,4 @@
-getgenv().script_key = getgenv()['script_key']
+getgenv().script_key = getgenv().script_key
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/notjohnnylol/Azusidian/refs/heads/main/UILoader"))()
 local api = loadstring(game:HttpGet("https://sdkapi-public.luarmor.net/library.lua"))()
@@ -31,13 +31,14 @@ local function load_script(key)
 end
 
 if getgenv().script_key then
-    task.spawn(function()
-        local status = api.check_key(getgenv().script_key)
-        if status.code == "KEY_VALID" then
-            Library:Notify({Title = "Azure Keysystem", Description = "Loaded predefined key: " .. getgenv().script_key, Time = 4})
-            load_script(getgenv().script_key)
-        end
-    end)
+    local status = api.check_key(getgenv().script_key)
+    Library:Notify({Title = "Debug", Description = "Status code: " .. tostring(status.code), Time = 5})
+    if status.code == "KEY_VALID" then
+        writefile("savedazurekey", getgenv().script_key)
+        Library:Notify({Title = "Debug", Description = "Loading script with key: " .. getgenv().script_key, Time = 5})
+        load_script(getgenv().script_key)
+        return
+    end
 end
 
 key:AddInput("AzureKey", {
@@ -77,14 +78,11 @@ UnloadUI:AddButton({Text = "Unload UI", Func = function()
     Library:Unload()
 end})
 
-if isfile("savedazurekey") and not getgenv().script_key then
-    task.spawn(function()
-        local saved_key = readfile("savedazurekey"):gsub("%s+", "")
-        local status = api.check_key(saved_key)
-        if status.code == "KEY_VALID" then
-            getgenv().script_key = saved_key
-            Library:Notify({Title = "Azure Keysystem", Description = "Loaded saved key: " .. saved_key, Time = 4})
-            load_script(saved_key)
-        end
-    end)
+if isfile("savedazurekey") then
+    local saved_key = readfile("savedazurekey"):gsub("%s+", "")
+    local status = api.check_key(saved_key)
+    if status.code == "KEY_VALID" then
+        getgenv().script_key = saved_key
+        load_script(saved_key)
+    end
 end
